@@ -13,6 +13,10 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
  * Created by lahm on 2018/12/14 5:06 PM .
  */
 public class qqmusic implements IXposedHookLoadPackage {
+    private void log(String msg) {
+        XposedBridge.log("qqmusiclog--" + msg);
+    }
+
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
         if (loadPackageParam.packageName.contains("com.tencent.qqmusic")) {
@@ -22,17 +26,18 @@ public class qqmusic implements IXposedHookLoadPackage {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                                 super.beforeHookedMethod(param);
-
+                                log("before");
                             }
 
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                                 super.afterHookedMethod(param);
                                 param.setResult(true);
+                                log("after");
                             }
                         });
             } catch (Exception e) {
-                XposedBridge.log("fucku--Exception");
+                log("exception");
             }
         }
     }
